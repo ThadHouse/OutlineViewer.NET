@@ -119,17 +119,24 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ConnectionControl.xaml.cs">
+    <Compile Include="NetworkTables\INetworkTableConnectionHandler.cs" />
+    <Compile Include="NetworkTables\INetworkTableEntryHandler.cs" />
+    <Compile Include="NetworkTables\INetworkTableServerClientManager.cs" />
+    <Compile Include="NetworkTables\NetworkTableConnectionHandler.cs" />
+    <Compile Include="NetworkTables\NetworkTableEntryHandler.cs" />
+    <Compile Include="NetworkTables\NetworkTableServerClientManager.cs" />
+    <Compile Include="Views\NetworkTableTreeItemTemplateSelector.cs" />
+    <Compile Include="Views\ConnectionControl.xaml.cs">
       <DependentUpon>ConnectionControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainPage.xaml.cs">
+    <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PreferencesPage.xaml.cs">
+    <Compile Include="Views\PreferencesPage.xaml.cs">
       <DependentUpon>PreferencesPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StartProperties.cs" />
+    <Compile Include="ServerProperties.cs" />
     <Compile Include="Views\NetworkTableTree.xaml.cs">
       <DependentUpon>NetworkTableTree.xaml</DependentUpon>
     </Compile>
@@ -155,15 +162,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="ConnectionControl.xaml">
+    <Page Include="Views\ConnectionControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainPage.xaml">
+    <Page Include="Views\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="PreferencesPage.xaml">
+    <Page Include="Views\PreferencesPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -185,20 +192,26 @@
     <PackageReference Include="Microsoft.Toolkit.Uwp.UI">
       <Version>5.1.1</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.UI.Xaml">
+      <Version>2.3.191007001-prerelease</Version>
+    </PackageReference>
     <PackageReference Include="System.Memory">
       <Version>4.5.3</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="FRC.NetworkTables.Core">
-      <HintPath>..\..\..\..\GitHub\NetworkTables\src\FRC.NetworkTables.Core\bin\Debug\netstandard2.0\FRC.NetworkTables.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="FRC.NetworkTables.Core.DesktopLibraries">
-      <HintPath>..\..\..\..\GitHub\NetworkTables\src\FRC.NetworkTables.Core.DesktopLibraries\bin\Debug\netstandard2.0\FRC.NetworkTables.Core.DesktopLibraries.dll</HintPath>
-    </Reference>
+    <PRIResource Include="Strings\en-US\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
-    <PRIResource Include="Strings\en-US\Resources.resw" />
+    <Folder Include="Views\Entries\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="FRC.NetworkTables.Core">
+      <HintPath>..\..\..\robotdotnet\networktables\src\FRC.NetworkTables.Core\bin\Debug\netstandard2.0\FRC.NetworkTables.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="FRC.NetworkTables.Core.DesktopLibraries">
+      <HintPath>..\..\..\robotdotnet\networktables\src\FRC.NetworkTables.Core.DesktopLibraries\bin\Debug\netstandard2.0\FRC.NetworkTables.Core.DesktopLibraries.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

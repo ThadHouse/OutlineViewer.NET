@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OutlineViewer.NET
 {
-    public class StartProperties
+    public struct ServerProperties
     {
         public int Port { get; set; }
         public bool ServerMode { get; set; }

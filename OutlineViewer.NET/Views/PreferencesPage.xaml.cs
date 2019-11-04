@@ -17,32 +17,42 @@ using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
-namespace OutlineViewer.NET
+namespace OutlineViewer.NET.Views
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class PreferencesPage : Page
+    public sealed partial class PreferencesPage : ContentDialog
     {
         public PreferencesPage()
         {
             this.InitializeComponent();
-            ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.Auto;
         }
 
-        private void QuitButton_Click(object sender, RoutedEventArgs e)
+        public ServerProperties GetServerProperties()
         {
-            Application.Current.Exit();
-        }
-
-        private void StartButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.Frame.Navigate(typeof(MainPage), new StartProperties
+            return new ServerProperties()
             {
                 Port = int.Parse(ServerPort.Text),
                 ServerLocation = ServerLocation.Text,
                 ServerMode = ServerMode.IsOn
-            });
+            };
+        }
+
+        private void ServerMode_ToggleChanged(object sender, RoutedEventArgs e)
+        {
+            if (ServerLocation != null)
+            {
+                ServerLocation.IsEnabled = !ServerMode.IsOn;
+            }
+        }
+
+        private void DefaultPort_ToggleChanged(object sender, RoutedEventArgs e)
+        {
+            if (ServerPort != null)
+            {
+                ServerPort.IsEnabled = !DefaultPort.IsOn;
+            }
         }
     }
 }

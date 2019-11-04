@@ -1,4 +1,5 @@
 ﻿using FRC.NetworkTables;
+using OutlineViewer.NET.NetworkTables;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,18 +17,14 @@ using Windows.UI.Xaml.Navigation;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
-namespace OutlineViewer.NET
+namespace OutlineViewer.NET.Views
 {
     public sealed partial class ConnectionControl : UserControl
     {
-
-        public bool ServerMode { get; set; }
         public string ServerLocation { get; set; }
 
-        public int ConnectionCount = 0;
-
         private DispatcherTimer dispatcherTimer;
-        private NetworkTableInstance instance;
+        private INetworkTableConnectionHandler connectionHandler;
 
         public ConnectionControl()
         {
@@ -35,33 +32,19 @@ namespace OutlineViewer.NET
         }
 
 
-        public void StartNetworking(StartProperties properties, NetworkTableInstance instance)
+        public void StartNetworking(INetworkTableConnectionHandler connectionHandler)
         {
-            ServerMode = properties.ServerMode;
-            ServerLocation = properties.ServerLocation;
+            this.connectionHandler = connectionHandler;
 
-            var resourceLoader = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
-
-            if (ServerMode)
+            connectionHandler.ConnectionChanged += (o, e) =>
             {
-                ServerStarting();
-            }
-            else
-            {
-                ClientStarting();
-            }
+                _ = Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                  {
+                      UpdateConnectionLabel();
+                  });
+            };
 
-            this.instance = instance;
-
-            instance.AddConnectionListener((in ConnectionNotification notification) =>
-            {
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-                Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-                {
-                    UpdateConnectionLabel();
-                });
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-            }, true);
+            UpdateConnectionLabel();
 
             dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += (o, e) => UpdateConnectionLabel();
@@ -69,9 +52,9 @@ namespace OutlineViewer.NET
             dispatcherTimer.Start();
         }
 
-        private void UpdateConnectionLabel()
+        public void UpdateConnectionLabel()
         {
-            var mode = instance.GetNetworkMode();
+            var mode = connectionHandler.NetworkMode;
             if (mode == NetworkMode.None)
             {
                 GeneralFailure();
@@ -160,7 +143,7 @@ namespace OutlineViewer.NET
         private void ServerSuccess()
         {
             var resourceLoader = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
-            var numClients = instance.GetConnections().Length;
+            var numClients = connectionHandler.NumConnections;
             if (numClients == 0)
             {
                 ConnectionLabel.Text = resourceLoader.GetString("RunningServerNoClients/Text");

@@ -5,17 +5,63 @@
     xmlns:local="using:OutlineViewer.NET.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <TreeView ItemsSource="{x:Bind DataSource}">
-        <TreeView.ItemTemplate>
-            <DataTemplate x:DataType="local:NetworkTableTreeEntry">
-                <TreeViewItem
-                                ItemsSource="{x:Bind Children}"
-                                Content="{x:Bind Name}"/>
-            </DataTemplate>
-        </TreeView.ItemTemplate>
-    </TreeView>
+    <!--<UserControl.Resources>
+        <Style TargetType="controls:TreeViewItem">
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        </Style>
+    </UserControl.Resources>-->
+
+    <UserControl.Resources>
+        <DataTemplate x:Key="StringTemplate" x:DataType="local:NetworkTableTreeEntry">
+            <controls:TreeViewItem ItemsSource="{x:Bind Children}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{x:Bind Name}" />
+                    <TextBox Text="{x:Bind StringValue, Mode=TwoWay}"/>
+                </StackPanel>
+            </controls:TreeViewItem>
+        </DataTemplate>
+
+        <DataTemplate x:Key="DoubleTemplate" x:DataType="local:NetworkTableTreeEntry">
+            <controls:TreeViewItem ItemsSource="{x:Bind Children}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{x:Bind Name}" />
+                    <TextBox Text="{x:Bind DoubleValue, Mode=TwoWay}"/>
+                </StackPanel>
+            </controls:TreeViewItem>
+        </DataTemplate>
+
+        <DataTemplate x:Key="BoolTemplate" x:DataType="local:NetworkTableTreeEntry">
+            <controls:TreeViewItem ItemsSource="{x:Bind Children}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{x:Bind Name}" />
+                    <CheckBox IsChecked="{x:Bind BoolValue, Mode=TwoWay}"/>
+                </StackPanel>
+            </controls:TreeViewItem>
+        </DataTemplate>
+
+        <DataTemplate x:Key="RootTemplate" x:DataType="local:NetworkTableTreeEntry">
+            <controls:TreeViewItem ItemsSource="{x:Bind Children, Mode=TwoWay}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{x:Bind Name}" />
+                </StackPanel>
+            </controls:TreeViewItem>
+        </DataTemplate>
+        <local:NetworkTableTreeItemTemplateSelector
+            x:Key="NetworkTableTreeItemTemplateSelector"
+            StringTemplate="{StaticResource StringTemplate}"
+            RootTemplate="{StaticResource RootTemplate}"
+            DoubleTemplate="{StaticResource DoubleTemplate}"
+            BoolTemplate="{StaticResource BoolTemplate}"/>
+    </UserControl.Resources>
+
+    <controls:TreeView ItemsSource="{x:Bind DataSource, Mode=TwoWay}" ItemTemplateSelector="{StaticResource NetworkTableTreeItemTemplateSelector}">
+    </controls:TreeView>
+
+ 
 </UserControl>

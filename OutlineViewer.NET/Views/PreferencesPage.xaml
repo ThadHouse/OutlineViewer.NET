@@ -1,0 +1,24 @@
+﻿<ContentDialog
+    xmlns:controls="using:Windows.UI.Xaml.Controls"
+    x:Class="OutlineViewer.NET.Views.PreferencesPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:OutlineViewer.NET"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:converters="using:Microsoft.Toolkit.Uwp.UI.Converters"
+    
+    PrimaryButtonText="Start"
+    CloseButtonText="Quit"
+    
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <StackPanel Margin="20">
+        <TextBlock Text="OutlineViewer Preferences" Margin="0,0,0,20"></TextBlock>
+        <ToggleSwitch x:Name="ServerMode" Header="Server Mode" Toggled="ServerMode_ToggleChanged"></ToggleSwitch>
+        <TextBox x:Name="ServerLocation" Header="Server Location"></TextBox>
+        <ToggleSwitch x:Name="DefaultPort" Header="Default Port" IsOn="True" Toggled="DefaultPort_ToggleChanged"></ToggleSwitch>
+        <TextBox x:Name="ServerPort" Header="Server Location" Text="1735" IsEnabled="False"></TextBox>
+    </StackPanel>
+</ContentDialog>
