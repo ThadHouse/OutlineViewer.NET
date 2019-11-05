@@ -11,19 +11,32 @@
     d:DesignWidth="400">
 
     <!--<UserControl.Resources>
+
+    </UserControl.Resources>-->
+
+    <UserControl.Resources>
         <Style TargetType="controls:TreeViewItem">
             <Setter Property="HorizontalAlignment" Value="Stretch" />
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         </Style>
-    </UserControl.Resources>-->
 
-    <UserControl.Resources>
         <DataTemplate x:Key="StringTemplate" x:DataType="local:NetworkTableTreeEntry">
             <controls:TreeViewItem ItemsSource="{x:Bind Children}">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{x:Bind Name}" />
-                    <TextBox Text="{x:Bind StringValue, Mode=TwoWay}"/>
-                </StackPanel>
+                <Grid x:Name="TitleGrid" RelativePanel.Below="AppMenuBar" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="100"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="{x:Bind Name}"/>
+                    <TextBox Grid.Column="1" HorizontalAlignment="Stretch" Text="{x:Bind StringValue, Mode=TwoWay}"/>
+                    <TextBlock Grid.Column="2" Text="{x:Bind EntryType}" TextAlignment="Center"/>
+                </Grid>
+                <!--<RelativePanel>
+                    <TextBlock RelativePanel.AlignLeftWithPanel="True" Text="{x:Bind Name}" />
+                    <TextBox RelativePanel.LeftOf="TypeBlock" Width="200" HorizontalAlignment="Stretch" Text="{x:Bind StringValue, Mode=TwoWay}"/>
+                    <TextBlock x:Name="TypeBlock" Width="100" HorizontalTextAlignment="Center" RelativePanel.AlignRightWithPanel="True" Text="Hello"/>
+                </RelativePanel>-->
             </controls:TreeViewItem>
         </DataTemplate>
 

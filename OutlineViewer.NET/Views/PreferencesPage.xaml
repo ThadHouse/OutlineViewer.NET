@@ -17,7 +17,7 @@
     <StackPanel Margin="20">
         <TextBlock Text="OutlineViewer Preferences" Margin="0,0,0,20"></TextBlock>
         <ToggleSwitch x:Name="ServerMode" Header="Server Mode" Toggled="ServerMode_ToggleChanged"></ToggleSwitch>
-        <TextBox x:Name="ServerLocation" Header="Server Location"></TextBox>
+        <TextBox x:Name="ServerLocation" Header="Server Location" Text="127.0.0.1"></TextBox>
         <ToggleSwitch x:Name="DefaultPort" Header="Default Port" IsOn="True" Toggled="DefaultPort_ToggleChanged"></ToggleSwitch>
         <TextBox x:Name="ServerPort" Header="Server Location" Text="1735" IsEnabled="False"></TextBox>
     </StackPanel>

@@ -19,13 +19,36 @@
                 <MenuFlyoutItem Text="Exit"></MenuFlyoutItem>
             </MenuBarItem>
         </MenuBar>
-        <views:NetworkTableTree x:Name="TableTree" RelativePanel.AlignLeftWithPanel="True" RelativePanel.Below="AppMenuBar">
+        <Grid x:Name="TitleGrid" RelativePanel.Below="AppMenuBar" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="100"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="Key" TextAlignment="Center"/>
+            <TextBlock Grid.Column="1" Text="Value" TextAlignment="Center"/>
+            <TextBlock Grid.Column="2" Text="Type" TextAlignment="Center"/>
+        </Grid>
+
+        <views:NetworkTableTree HorizontalAlignment="Stretch" x:Name="TableTree" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.Below="TitleGrid">
             
         </views:NetworkTableTree >
 
+        <Grid RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="100"/>
+            </Grid.ColumnDefinitions>
+            <Border Grid.Column="0" BorderThickness="1" BorderBrush="Gray" HorizontalAlignment="Right" VerticalAlignment="Stretch"/>
+            <Border Grid.Column="2" BorderThickness="1" BorderBrush="Gray" HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
+        </Grid>
+
         <views:ConnectionControl Visibility="Collapsed" x:Name="ConnectionBlock" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" Height="50">
-            
+
         </views:ConnectionControl>
+
+
 
         <!--<Grid RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" Height="50">
             <Rectangle x:Name="ConnectionBlock" Fill="Red" ></Rectangle>
