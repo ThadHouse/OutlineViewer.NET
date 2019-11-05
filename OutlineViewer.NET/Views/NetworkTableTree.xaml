@@ -96,7 +96,7 @@
             BoolTemplate="{StaticResource BoolTemplate}"/>
     </UserControl.Resources>
 
-    <controls:TreeView ItemsSource="{x:Bind DataSource}" ItemTemplateSelector="{StaticResource NetworkTableTreeItemTemplateSelector}">
+    <controls:TreeView ItemInvoked="TreeView_ItemInvoked" ItemsSource="{x:Bind DataSource}" ItemTemplateSelector="{StaticResource NetworkTableTreeItemTemplateSelector}">
     </controls:TreeView>
 
  

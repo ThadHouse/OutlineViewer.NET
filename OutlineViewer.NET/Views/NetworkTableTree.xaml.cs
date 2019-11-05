@@ -116,7 +116,7 @@ namespace OutlineViewer.NET.Views
                 // Find children 
                 foreach (var child in current.Children)
                 {
-                    if (child.Name == str)
+                    if (child.Name == str && child.EntryType == EntryType.Root)
                     {
                         current = child;
                         break;
@@ -227,6 +227,20 @@ namespace OutlineViewer.NET.Views
                 //{
                 //    
                 //}
+            }
+        }
+
+        private void TreeView_ItemInvoked(Microsoft.UI.Xaml.Controls.TreeView sender, Microsoft.UI.Xaml.Controls.TreeViewItemInvokedEventArgs args)
+        {
+            var toExpand = sender.ContainerFromItem(args.InvokedItem);
+            var node = sender.NodeFromContainer(toExpand);
+            if (node.IsExpanded)
+            {
+                sender.Collapse(node);
+            }
+            else
+            {
+                sender.Expand(node);
             }
         }
     }

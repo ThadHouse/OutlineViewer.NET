@@ -18,6 +18,15 @@
                 <MenuFlyoutItem Text="Preferences" Click="ShowPreferences"></MenuFlyoutItem>
                 <MenuFlyoutItem Text="Exit"></MenuFlyoutItem>
             </MenuBarItem>
+            <MenuBarItem Title="New Entry">
+                <MenuFlyoutItem Text="String"/>
+                <MenuFlyoutItem Text="Bool"/>
+                <MenuFlyoutItem Text="Double"/>
+                <MenuFlyoutItem Text="Raw"/>
+                <MenuFlyoutItem Text="String Array"/>
+                <MenuFlyoutItem Text="Bool Array"/>
+                <MenuFlyoutItem Text="Double Array"/>
+            </MenuBarItem>
         </MenuBar>
         <Grid x:Name="TitleGrid" RelativePanel.Below="AppMenuBar" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
             <Grid.ColumnDefinitions>
