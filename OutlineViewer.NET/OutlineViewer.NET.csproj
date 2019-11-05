@@ -216,14 +216,8 @@
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.9</Version>
     </PackageReference>
-    <PackageReference Include="Microsoft.Toolkit.Uwp">
-      <Version>5.1.1</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Toolkit.Uwp.UI">
-      <Version>5.1.1</Version>
-    </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
-      <Version>2.3.191007001-prerelease</Version>
+      <Version>2.2.190917002</Version>
     </PackageReference>
     <PackageReference Include="System.Memory">
       <Version>4.5.3</Version>
