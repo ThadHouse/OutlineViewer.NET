@@ -9,7 +9,7 @@
   <Identity
     Name="83cefae1-cf8c-4bc6-bb92-d463f86d50ed"
     Publisher="CN=thad.house"
-    Version="1.0.0.0" />
+    Version="1.0.3.0" />
 
   <mp:PhoneIdentity PhoneProductId="83cefae1-cf8c-4bc6-bb92-d463f86d50ed" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 

@@ -35,7 +35,7 @@ namespace OutlineViewer.NET
             NtCoreHelper.LoadOnStaticInit = false;
             try
             {
-                NtCore.ForceLoad();
+                NtCore.LoadExisting(new NtCorePlatform());
             }
             catch (Exception ex)
             {
