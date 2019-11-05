@@ -22,7 +22,7 @@
         <Grid x:Name="TitleGrid" RelativePanel.Below="AppMenuBar" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="350"/>
                 <ColumnDefinition Width="100"/>
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Column="0" Text="Key" TextAlignment="Center"/>
@@ -30,14 +30,17 @@
             <TextBlock Grid.Column="2" Text="Type" TextAlignment="Center"/>
         </Grid>
 
-        <views:NetworkTableTree HorizontalAlignment="Stretch" x:Name="TableTree" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.Below="TitleGrid">
-            
-        </views:NetworkTableTree >
+        <ScrollViewer HorizontalAlignment="Stretch"  RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.Above="ConnectionBlock" RelativePanel.Below="TitleGrid">
+            <views:NetworkTableTree x:Name="TableTree" HorizontalAlignment="Stretch">
+
+            </views:NetworkTableTree >
+        </ScrollViewer>
+
 
         <Grid RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="350"/>
                 <ColumnDefinition Width="100"/>
             </Grid.ColumnDefinitions>
             <Border Grid.Column="0" BorderThickness="1" BorderBrush="Gray" HorizontalAlignment="Right" VerticalAlignment="Stretch"/>

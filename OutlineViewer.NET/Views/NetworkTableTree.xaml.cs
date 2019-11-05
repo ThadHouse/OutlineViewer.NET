@@ -1,4 +1,5 @@
 ﻿using FRC.NetworkTables;
+using FRC.NetworkTables.Interop;
 using OutlineViewer.NET.NetworkTables;
 using System;
 using System.Collections.Generic;
@@ -40,11 +41,11 @@ namespace OutlineViewer.NET.Views
         {
             this.entryHandler = entryHandler;
 
-            entryHandler.NewEntry += (k, v) =>
+            entryHandler.NewEntry += (k, e, v) =>
             {
                 _ = Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
                 {
-                    NewEntry(k, v);
+                    NewEntry(k, e, v);
                 });
             };
 
@@ -56,18 +57,18 @@ namespace OutlineViewer.NET.Views
                 });
             };
 
-            entryHandler.DeletedEntry += (k, v) =>
+            entryHandler.DeletedEntry += (k) =>
             {
                 _ = Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
                 {
-                    DeleteEntry(k, v);
+                    DeleteEntry(k);
                 });
             };
 
             entryHandler.StartListener();
         }
 
-        private void UpdateEntry(string key, object value)
+        private void UpdateEntry(string key, in NetworkTableValue value)
         {
             entryMap[key].SetEntryValue(value);
         }
@@ -81,37 +82,15 @@ namespace OutlineViewer.NET.Views
             }
         }
 
-        private void AddNewNode(string fullName, string keyName, NetworkTableTreeEntry parentEntry, object value)
+        private void AddNewNode(string fullName, string keyName, in NetworkTableEntry entry, NetworkTableTreeEntry parentEntry, in NetworkTableValue value)
         {
-            NetworkTableTreeEntry newTreeEntry = null;
-            switch (value)
-            {
-                case string str:
-                    newTreeEntry = new NetworkTableTreeEntry(parentEntry, keyName, str);
-                    break;
-                case double dbl:
-                    newTreeEntry = new NetworkTableTreeEntry(parentEntry, keyName, dbl);
-                    break;
-                case bool bl:
-                    newTreeEntry = new NetworkTableTreeEntry(parentEntry, keyName, bl);
-                    break;
-                case byte[] raw:
-                    break;
-                case bool[] blArr:
-                    break;
-                case double[] dblArr:
-                    break;
-                case string[] strArr:
-                    break;
-                default:
-                    throw new InvalidOperationException("Unsupported Value?");
-            }
+            NetworkTableTreeEntry newTreeEntry = new NetworkTableTreeEntry(parentEntry, keyName, entry, value);
             parentEntry.Children.Add(newTreeEntry);
             entryMap.Add(fullName, newTreeEntry);
             //SortNodes(DataSource[0]);
         }
 
-        private void NewEntry(string key, object value)
+        private void NewEntry(string key, in NetworkTableEntry entry, in NetworkTableValue value)
         {
             var normalized = Normalize(key);
 
@@ -127,7 +106,7 @@ namespace OutlineViewer.NET.Views
             if (split.Length == 0)
             {
                 // Goes in root
-                AddNewNode(key, keyName, current, value);
+                AddNewNode(key, keyName, entry, current, value);
                 return;
             }
 
@@ -153,10 +132,10 @@ namespace OutlineViewer.NET.Views
             }
 
             // Found the node to add.
-            AddNewNode(key, keyName, current, value);
+            AddNewNode(key, keyName, entry, current, value);
         }
 
-        private void DeleteEntry(string key, object value)
+        private void DeleteEntry(string key)
         {
             var entry = entryMap[key];
             entryMap.Remove(key);
@@ -210,6 +189,45 @@ namespace OutlineViewer.NET.Views
             }
         end:
             return newString.ToString();
+        }
+
+        private void ChangePersistent_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is MenuFlyoutItem mfi)
+            {
+                if (mfi.DataContext is NetworkTableTreeEntry treeEntry)
+                {
+                    treeEntry.ChangePersistent_Click();
+                }
+            }
+        }
+
+        private void Delete_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is MenuFlyoutItem mfi)
+            {
+                if (mfi.DataContext is NetworkTableTreeEntry treeEntry)
+                {
+                    treeEntry.Delete_Click();
+                }
+            }
+            ;
+            //entry.Delete();
+        }
+
+        private void MenuFlyout_Opening(object sender, object e)
+        {
+            if (sender is MenuFlyout mf)
+            {
+                if (mf.Target.DataContext is NetworkTableTreeEntry treeEntry)
+                {
+                    treeEntry.UpdatePersistText();
+                }
+                //if (mf. is NetworkTableTreeEntry treeEntry)
+                //{
+                //    
+                //}
+            }
         }
     }
 }

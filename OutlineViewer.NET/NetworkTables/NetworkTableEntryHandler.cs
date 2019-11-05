@@ -10,18 +10,20 @@ namespace OutlineViewer.NET.NetworkTables
 {
     public class NetworkTableEntryHandler : INetworkTableEntryHandler
     {
-        public event EntryNotification NewEntry;
-        public event EntryNotification UpdatedEntry;
-        public event EntryNotification DeletedEntry;
 
 
         private readonly NetworkTableInstance instance;
         private NtEntryListener entryListener;
+        private NtEntryListener updateListener;
 
         public NetworkTableEntryHandler(NetworkTableInstance instance)
         {
             this.instance = instance;
         }
+
+        public event NewEntryNotification NewEntry;
+        public event UpdateEntryNotification UpdatedEntry;
+        public event DeleteEntryNotification DeletedEntry;
 
         public void StartListener()
         {
@@ -29,17 +31,18 @@ namespace OutlineViewer.NET.NetworkTables
             {
                 if (notification.Flags.HasFlag(NotifyFlags.New))
                 {
-                    NewEntry?.Invoke(notification.Name, notification.Value.Value.GetValue());
-                }
-                else if (notification.Flags.HasFlag(NotifyFlags.Update))
-                {
-                    UpdatedEntry?.Invoke(notification.Name, notification.Value.Value.GetValue());
+                    NewEntry?.Invoke(notification.Name, notification.Entry, notification.Value.ToValue());
                 }
                 else if (notification.Flags.HasFlag(NotifyFlags.Delete))
                 {
-                    DeletedEntry?.Invoke(notification.Name, notification.Value.Value.GetValue());
+                    DeletedEntry?.Invoke(notification.Name);
                 }
-            }, NotifyFlags.New | NotifyFlags.Delete | NotifyFlags.Update | NotifyFlags.Immediate | NotifyFlags.Local);
+            }, NotifyFlags.New | NotifyFlags.Delete | NotifyFlags.Immediate | NotifyFlags.Local);
+
+            updateListener = instance.AddEntryListener("", (in RefEntryNotification notification) =>
+            {
+                UpdatedEntry?.Invoke(notification.Name, notification.Value.ToValue());
+            }, NotifyFlags.Update | NotifyFlags.Immediate);
         }
 
         public void StopListener()
@@ -47,6 +50,11 @@ namespace OutlineViewer.NET.NetworkTables
             if (entryListener.Get() != 0)
             {
                 instance.RemoveEntryListener(entryListener);
+            }
+
+            if (updateListener.Get() != 0)
+            {
+                instance.RemoveEntryListener(updateListener);
             }
         }
     }

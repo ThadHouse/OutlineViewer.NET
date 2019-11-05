@@ -1,4 +1,5 @@
 ﻿using FRC.NetworkTables;
+using FRC.NetworkTables.Interop;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Xaml;
 
 namespace OutlineViewer.NET.Views
 {
@@ -20,21 +22,23 @@ namespace OutlineViewer.NET.Views
 
     public class NetworkTableTreeEntry : INotifyPropertyChanged
     {
-        private string name;
         private string stringValue;
         private double doubleValue;
         private bool boolValue;
+        private NetworkTableEntry entry;
 
         public EntryType EntryType { get; set; }
 
-        public string Name { get => name; set => name = value; }
+        public string Name { get; set; }
         public string StringValue
         {
             get => stringValue;
             set
             {
                 stringValue = value;
+                entry.SetValue(value);
                 OnPropertyChanged();
+                
             }
         }
         public double DoubleValue
@@ -43,6 +47,7 @@ namespace OutlineViewer.NET.Views
             set
             {
                 doubleValue = value;
+                entry.SetValue(value);
                 OnPropertyChanged();
             }
         }
@@ -52,36 +57,39 @@ namespace OutlineViewer.NET.Views
             set
             {
                 boolValue = value;
+                entry.SetValue(value);
                 OnPropertyChanged();
             }
         }
 
-        public void SetEntryValue(object value)
+        public void SetEntryValue(in NetworkTableValue value)
         {
-            switch (value)
+            switch (value.Type)
             {
-                case string str:
-                    EntryType = EntryType.String;
-                    StringValue = str;
-                    break;
-                case double dbl:
-                    EntryType = EntryType.Double;
-                    DoubleValue = dbl;
-                    break;
-                case bool bl:
+                case NtType.Boolean:
                     EntryType = EntryType.Bool;
-                    BoolValue = bl;
+                    BoolValue = value.GetBoolean();
                     break;
-                case byte[] raw:
+                case NtType.Double:
+                    EntryType = EntryType.Double;
+                    DoubleValue = value.GetDouble();
                     break;
-                case bool[] blArr:
+                case NtType.String:
+                    EntryType = EntryType.String;
+                    StringValue = value.GetString();
                     break;
-                case double[] dblArr:
-                    break;
-                case string[] strArr:
-                    break;
+                //case NtType.Raw:
+                //    break;
+                //case NtType.BooleanArray:
+                //    break;
+                //case NtType.DoubleArray:
+                //    break;
+                //case NtType.StringArray:
+                //    break;
+                //case NtType.Rpc:
+                //    break;
                 default:
-                    throw new InvalidOperationException("Unsupported Value?");
+                    break;
             }
         }
 
@@ -96,28 +104,12 @@ namespace OutlineViewer.NET.Views
             EntryType = EntryType.Root;
         }
 
-        public NetworkTableTreeEntry(NetworkTableTreeEntry parent, string name, string value)
+        public NetworkTableTreeEntry(NetworkTableTreeEntry parent, string name, in NetworkTableEntry entry, in NetworkTableValue value)
         {
             Parent = parent;
             Name = name;
-            EntryType = EntryType.String;
-            StringValue = value;
-        }
-
-        public NetworkTableTreeEntry(NetworkTableTreeEntry parent, string name, double value)
-        {
-            Parent = parent;
-            Name = name;
-            EntryType = EntryType.Double;
-            DoubleValue = value;
-        }
-
-        public NetworkTableTreeEntry(NetworkTableTreeEntry parent, string name, bool value)
-        {
-            Parent = parent;
-            Name = name;
-            EntryType = EntryType.Bool;
-            BoolValue = value;
+            this.entry = entry;
+            SetEntryValue(value);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -125,6 +117,30 @@ namespace OutlineViewer.NET.Views
         {
             // Raise the PropertyChanged event, passing the name of the property whose value has changed.
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public string PersistentText => !entry.IsPersistent() ? "Set Persistent" : "Set Transient";
+
+        public void UpdatePersistText()
+        {
+            OnPropertyChanged(nameof(PersistentText));
+        }
+
+        public void ChangePersistent_Click()
+        {
+            if (entry.IsPersistent())
+            {
+                entry.ClearPersistent();
+            }
+            else
+            {
+                entry.SetPersistent();
+            }
+        }
+
+        public void Delete_Click()
+        {
+            entry.Delete();
         }
     }
 }

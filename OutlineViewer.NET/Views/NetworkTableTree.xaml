@@ -10,10 +10,6 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <!--<UserControl.Resources>
-
-    </UserControl.Resources>-->
-
     <UserControl.Resources>
         <Style TargetType="controls:TreeViewItem">
             <Setter Property="HorizontalAlignment" Value="Stretch" />
@@ -23,48 +19,75 @@
         <DataTemplate x:Key="StringTemplate" x:DataType="local:NetworkTableTreeEntry">
             <controls:TreeViewItem ItemsSource="{x:Bind Children}">
                 <Grid x:Name="TitleGrid" RelativePanel.Below="AppMenuBar" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
+                    <Grid.ContextFlyout>
+                        <MenuFlyout Opening="MenuFlyout_Opening">
+                            <MenuFlyoutItem Text="{x:Bind PersistentText, Mode=OneWay}" Click="ChangePersistent_Click"/>
+                            <MenuFlyoutItem Text="Delete" Click="Delete_Click"/>
+                        </MenuFlyout>
+                    </Grid.ContextFlyout>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="350"/>
                         <ColumnDefinition Width="100"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="0" Text="{x:Bind Name}"/>
                     <TextBox Grid.Column="1" HorizontalAlignment="Stretch" Text="{x:Bind StringValue, Mode=TwoWay}"/>
                     <TextBlock Grid.Column="2" Text="{x:Bind EntryType}" TextAlignment="Center"/>
                 </Grid>
-                <!--<RelativePanel>
-                    <TextBlock RelativePanel.AlignLeftWithPanel="True" Text="{x:Bind Name}" />
-                    <TextBox RelativePanel.LeftOf="TypeBlock" Width="200" HorizontalAlignment="Stretch" Text="{x:Bind StringValue, Mode=TwoWay}"/>
-                    <TextBlock x:Name="TypeBlock" Width="100" HorizontalTextAlignment="Center" RelativePanel.AlignRightWithPanel="True" Text="Hello"/>
-                </RelativePanel>-->
             </controls:TreeViewItem>
         </DataTemplate>
 
         <DataTemplate x:Key="DoubleTemplate" x:DataType="local:NetworkTableTreeEntry">
             <controls:TreeViewItem ItemsSource="{x:Bind Children}">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{x:Bind Name}" />
-                    <TextBox Text="{x:Bind DoubleValue, Mode=TwoWay}"/>
-                </StackPanel>
+                <Grid x:Name="TitleGrid" RelativePanel.Below="AppMenuBar" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
+                    <Grid.ContextFlyout>
+                        <MenuFlyout Opening="MenuFlyout_Opening">
+                            <MenuFlyoutItem Text="{x:Bind PersistentText, Mode=OneWay}" Click="ChangePersistent_Click"/>
+                            <MenuFlyoutItem Text="Delete" Click="Delete_Click"/>
+                        </MenuFlyout>
+                    </Grid.ContextFlyout>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="350"/>
+                        <ColumnDefinition Width="100"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="{x:Bind Name}"/>
+                    <TextBox Grid.Column="1" HorizontalAlignment="Stretch" Text="{x:Bind DoubleValue, Mode=TwoWay}"/>
+                    <TextBlock Grid.Column="2" Text="{x:Bind EntryType}" TextAlignment="Center"/>
+                </Grid>
             </controls:TreeViewItem>
         </DataTemplate>
 
         <DataTemplate x:Key="BoolTemplate" x:DataType="local:NetworkTableTreeEntry">
             <controls:TreeViewItem ItemsSource="{x:Bind Children}">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{x:Bind Name}" />
-                    <CheckBox IsChecked="{x:Bind BoolValue, Mode=TwoWay}"/>
-                </StackPanel>
+                <Grid x:Name="TitleGrid" RelativePanel.Below="AppMenuBar" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
+                    <Grid.ContextFlyout>
+                        <MenuFlyout Opening="MenuFlyout_Opening">
+                            <MenuFlyoutItem Text="{x:Bind PersistentText, Mode=OneWay}" Click="ChangePersistent_Click"/>
+                            <MenuFlyoutItem Text="Delete" Click="Delete_Click"/>
+                        </MenuFlyout>
+                    </Grid.ContextFlyout>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="350"/>
+                        <ColumnDefinition Width="100"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="{x:Bind Name}"/>
+                    <CheckBox Grid.Column="1" HorizontalAlignment="Stretch" IsChecked="{x:Bind BoolValue, Mode=TwoWay}"/>
+                    <TextBlock Grid.Column="2" Text="{x:Bind EntryType}" TextAlignment="Center"/>
+                </Grid>
             </controls:TreeViewItem>
         </DataTemplate>
 
         <DataTemplate x:Key="RootTemplate" x:DataType="local:NetworkTableTreeEntry">
-            <controls:TreeViewItem ItemsSource="{x:Bind Children, Mode=TwoWay}">
+            <controls:TreeViewItem ItemsSource="{x:Bind Children}">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="{x:Bind Name}" />
                 </StackPanel>
             </controls:TreeViewItem>
         </DataTemplate>
+        
+        
         <local:NetworkTableTreeItemTemplateSelector
             x:Key="NetworkTableTreeItemTemplateSelector"
             StringTemplate="{StaticResource StringTemplate}"
@@ -73,7 +96,7 @@
             BoolTemplate="{StaticResource BoolTemplate}"/>
     </UserControl.Resources>
 
-    <controls:TreeView ItemsSource="{x:Bind DataSource, Mode=TwoWay}" ItemTemplateSelector="{StaticResource NetworkTableTreeItemTemplateSelector}">
+    <controls:TreeView ItemsSource="{x:Bind DataSource}" ItemTemplateSelector="{StaticResource NetworkTableTreeItemTemplateSelector}">
     </controls:TreeView>
 
  
