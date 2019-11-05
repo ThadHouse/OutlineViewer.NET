@@ -20,5 +20,7 @@ namespace OutlineViewer.NET.NetworkTables
 
         void StartListener();
         void StopListener();
+
+        void NewValue(string key, string value);
     }
 }

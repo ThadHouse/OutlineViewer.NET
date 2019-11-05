@@ -132,6 +132,9 @@
     <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\NewEntry\NewStringDialog.xaml.cs">
+      <DependentUpon>NewStringDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\PreferencesPage.xaml.cs">
       <DependentUpon>PreferencesPage.xaml</DependentUpon>
     </Compile>
@@ -170,6 +173,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\NewEntry\NewStringDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\PreferencesPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -202,9 +209,7 @@
   <ItemGroup>
     <PRIResource Include="Strings\en-US\Resources.resw" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\Entries\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Reference Include="FRC.NetworkTables.Core">
       <HintPath>..\..\..\robotdotnet\networktables\src\FRC.NetworkTables.Core\bin\Debug\netstandard2.0\FRC.NetworkTables.Core.dll</HintPath>

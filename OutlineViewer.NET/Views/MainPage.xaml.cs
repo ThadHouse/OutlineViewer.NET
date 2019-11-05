@@ -1,6 +1,7 @@
 ﻿using FRC.NetworkTables;
 using FRC.NetworkTables.Interop;
 using OutlineViewer.NET.NetworkTables;
+using OutlineViewer.NET.Views.NewEntry;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -28,6 +29,7 @@ namespace OutlineViewer.NET.Views
     public sealed partial class MainPage : Page
     {
         private INetworkTableServerClientManager serverClientManager;
+        private INetworkTableEntryHandler entryHandler;
 
         public MainPage()
         {
@@ -44,7 +46,8 @@ namespace OutlineViewer.NET.Views
             defaultInst.GetEntry("Inner/N2/v2").SetString("5asdasd6");
             defaultInst.GetEntry("Inner/N2/v1").SetString("5hdfgh6");
 
-            TableTree.StartNetworking(new NetworkTableEntryHandler(defaultInst));
+            entryHandler = new NetworkTableEntryHandler(defaultInst);
+            TableTree.StartNetworking(entryHandler);
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -52,40 +55,6 @@ namespace OutlineViewer.NET.Views
             base.OnNavigatedTo(e);
 
             await ShowPreferencesInternal(true);
-
-            //if (e.Parameter is StartProperties startProperties)
-            //{
-            //    NtCoreHelper.LoadOnStaticInit = false;
-            //    NtCore.ForceLoad();
-
-            //    NetworkTableInstance inst = NetworkTableInstance.Default;
-            //    inst.SetNetworkIdentity("OutlineViewer.NET");
-            //    if (startProperties.ServerMode)
-            //    {
-            //        inst.StartServer(port: startProperties.Port);
-            //    }
-            //    else
-            //    {
-            //        if (int.TryParse(startProperties.ServerLocation, out int result))
-            //        {
-            //            inst.StartClientTeam(result, startProperties.Port);
-            //        } 
-            //        else
-            //        {
-            //            inst.StartClient(startProperties.ServerLocation, startProperties.Port);
-            //        }
-            //    }
-
-            //    TableTree.StartNetworking(inst);
-
-            //    ConnectionBlock.StartNetworking(startProperties, inst);
-                
-            //    ;
-            //}
-
-            // parameters.Name
-            // parameters.Text
-            // ...
         }
 
         private async void ShowPreferences(object source, RoutedEventArgs e)
@@ -127,6 +96,17 @@ namespace OutlineViewer.NET.Views
             else if (isStart)
             {
                 Application.Current.Exit();
+            }
+        }
+
+        private async void NewString_Click(object sender, RoutedEventArgs e)
+        {
+            NewStringDialog dialog = new NewStringDialog();
+            var result = await dialog.ShowAsync();
+            if (result == ContentDialogResult.Primary)
+            {
+                var newData = dialog.GetNewEntryData();
+                entryHandler.NewValue(newData.Key, newData.Value);
             }
         }
     }

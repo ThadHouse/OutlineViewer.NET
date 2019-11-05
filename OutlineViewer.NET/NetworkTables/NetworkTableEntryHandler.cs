@@ -57,5 +57,45 @@ namespace OutlineViewer.NET.NetworkTables
                 instance.RemoveEntryListener(updateListener);
             }
         }
+
+        public void NewValue(string key, string value)
+        {
+            key = Normalize(key);
+            var entry = instance.GetEntry(key);
+            entry.SetString(value);
+        }
+
+        private string Normalize(string key)
+        {
+            string tmp = NetworkTable.PathSeparator + key;
+            var sep = NetworkTable.PathSeparator;
+            StringBuilder newString = new StringBuilder();
+            for (int i = 0; i < tmp.Length; i++)
+            {
+                if (tmp[i] == sep)
+                {
+                    // Add it
+                    newString.Append(tmp[i]);
+                    i++;
+                    // Advance to first not sep character
+                    while (true)
+                    {
+                        if (i >= tmp.Length) goto end;
+                        if (tmp[i] == sep) i++;
+                        else
+                        {
+                            i--;
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    newString.Append(tmp[i]);
+                }
+            }
+        end:
+            return newString.ToString();
+        }
     }
 }

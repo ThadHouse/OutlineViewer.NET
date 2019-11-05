@@ -19,7 +19,7 @@
                 <MenuFlyoutItem Text="Exit"></MenuFlyoutItem>
             </MenuBarItem>
             <MenuBarItem Title="New Entry">
-                <MenuFlyoutItem Text="String"/>
+                <MenuFlyoutItem Text="String" Click="NewString_Click"/>
                 <MenuFlyoutItem Text="Bool"/>
                 <MenuFlyoutItem Text="Double"/>
                 <MenuFlyoutItem Text="Raw"/>
