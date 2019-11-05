@@ -26,6 +26,7 @@ namespace OutlineViewer.NET.Views
         private double doubleValue;
         private bool boolValue;
         private NetworkTableEntry entry;
+        private bool deleted = false;
 
         public EntryType EntryType { get; set; }
 
@@ -36,7 +37,7 @@ namespace OutlineViewer.NET.Views
             set
             {
                 stringValue = value;
-                entry.SetValue(value);
+                if (!deleted) entry.SetValue(value);
                 OnPropertyChanged();
                 
             }
@@ -47,7 +48,7 @@ namespace OutlineViewer.NET.Views
             set
             {
                 doubleValue = value;
-                entry.SetValue(value);
+                if (!deleted) entry.SetValue(value);
                 OnPropertyChanged();
             }
         }
@@ -57,7 +58,7 @@ namespace OutlineViewer.NET.Views
             set
             {
                 boolValue = value;
-                entry.SetValue(value);
+                if (!deleted) entry.SetValue(value);
                 OnPropertyChanged();
             }
         }
@@ -140,6 +141,7 @@ namespace OutlineViewer.NET.Views
 
         public void Delete_Click()
         {
+            deleted = true;
             entry.Delete();
         }
     }
